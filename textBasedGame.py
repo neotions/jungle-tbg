@@ -1,5 +1,7 @@
-# Your Name
-# ModuleSixMilestone.py
+# John St Hilaire
+# For use in Python 3
+# Text-Based game for IT140 at SNHU
+# 10/2023
 
 import os
 
@@ -12,6 +14,23 @@ def clear_screen():
 
 # A dictionary for the simplified dragon text game
 # The dictionary links a room to other rooms.
+rooms = {
+    'Great Hall': {'South': 'Bedroom'},
+    'Bedroom': {'North': 'Great Hall', 'East': 'Cellar'},
+    'Cellar': {'West': 'Bedroom'}
+}
+
+class Room:
+    def __init__(self, name, description, items, characters):
+        self.name = name
+        self.description = description
+        self.items = items
+        self.characters = characters
+
+    def enter(self):
+        print(self.description)
+        # additional logic here
+
 rooms = {
     'Great Hall': {'South': 'Bedroom'},
     'Bedroom': {'North': 'Great Hall', 'East': 'Cellar'},
