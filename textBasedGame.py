@@ -32,9 +32,15 @@ class Room:
         # additional logic here
 
 rooms = {
-    'Great Hall': {'South': 'Bedroom'},
-    'Bedroom': {'North': 'Great Hall', 'East': 'Cellar'},
-    'Cellar': {'West': 'Bedroom'}
+    "Plane Wreck": {"E": "Crash Site"},
+    "Crash Site": {"E": "Jungle Path", "W": "Plane Wreck"},
+    "Jungle Path": {"N": "Top of Temple Stairs", "W" : "Crash Site"},
+    "Top of Temple Stairs": {"N" : "Temple Entrance", "S" : "Jungle Path"},
+    "Temple Entrance": {"N" : "Treasure Room", "S" : "Top of Temple Stairs", "E" : "Demon's Lair", "W" : "Creepy Library"},
+    "Creepy Library": {"N" : "Tomb", "E" : "Temple Entrance"},
+    "Tomb": {"S" : "Creepy Library", "E" : "Treasure Room"},
+    "Treasure Room": {"S" : "Temple Entrance", "W" : "Tomb"},
+    "Demon's Lair": {"W" : "Temple Entrance"}
 }
 
 playing = True
