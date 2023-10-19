@@ -4,7 +4,6 @@
 # 10/2023
 
 import os
-import random
 
 ############  all game data ##############
 # map of rooms 
@@ -60,15 +59,51 @@ itemDescriptions = {
 
 # room items
 roomItems = {
-    "Plane Wreck": {},
-    "Crash Site": {},
-    "Jungle Path": {},
-    "Top of Temple Stairs": {},
-    "Temple Entrance": {},
-    "Creepy Library": {},
-    "Tomb": {},
-    "Treasure Room": {},
-    "Demon's Lair": {}
+    "Plane Wreck": {
+        "Chocolate Bar" : {
+            "examine" : "It's not much but it will have to do for now..."
+        }
+    },
+    "Crash Site": {
+        "Chocolate Bar" : {
+            "examine" : "It's not much but it will have to do for now..."
+        }
+    },
+    "Jungle Path": {
+        "Radio" : {
+            "examine" : "I found the radio... this won't be too helpful if I don't know where I am"
+        }
+    },
+    "Top of Temple Stairs": {
+        "Chocolate Bar" : {
+            "examine" : "It's not much but it will have to do for now..."
+        }
+    },
+    "Temple Entrance": {
+        "Strange note" : {
+            "examine" : "It's not much but it will have to do for now..."
+        }
+    },
+    "Creepy Library": {
+        "Blue Artifact" : {
+            "examine" : "It's not much but it will have to do for now..."
+        }
+    },
+    "Tomb": {
+        "Green Artifact" : {
+            "examine" : "It's not much but it will have to do for now..."
+        }
+    },
+    "Treasure Room": {
+        "Red Artifact" : {
+            "examine" : "It's not much but it will have to do for now..."
+        }
+    },
+    "Demon's Lair": {
+        "GPS Device" : {
+            "examine" : "It's not much but it will have to do for now..."
+        }
+    }
 }
 
 ############  functions and classes ##############
