@@ -1,9 +1,10 @@
 # John St Hilaire
 # For use in Python 3
-# Text-Based game for IT140 at SNHU
+# Text-Based game for IT140: Intro to Scripting, at SNHU
 # 10/2023
 
 import os
+import random
 
 # map of rooms 
 roomsDirections = {
@@ -33,15 +34,15 @@ rooms = {
 
 # room descriptions
 roomDescriptions = {
-    "Plane Wreck": " ",
-    "Crash Site": " ",
-    "Jungle Path": " ",
-    "Top of Temple Stairs": " ",
-    "Temple Entrance": " ",
-    "Creepy Library": " ",
-    "Tomb": " ",
-    "Treasure Room": " ",
-    "Demon's Lair": " "
+    "Plane Wreck" : "Placeholder room description",
+    "Crash Site" : "Placeholder room description",
+    "Jungle Path" : "Placeholder room description",
+    "Top of Temple Stairs" : "Placeholder room description",
+    "Temple Entrance" : "Placeholder room description",
+    "Creepy Library" : "Placeholder room description",
+    "Tomb": "Placeholder room description",
+    "Treasure Room" : "Placeholder room description",
+    "Demon's Lair" : "Placeholder room description"
 }
 
 # room items
@@ -63,6 +64,8 @@ def clear_screen():
         os.system('clear')
     else:
         os.system('cls')
+
+
 
 # class that contains methods for room logic 
 class Room:
@@ -109,21 +112,30 @@ inventory = []
 while playing:
     # Display current room
     print(f"You are in {currentRoom.name}.")
+    print(" ")
+    # table header
+    print(f"{'Direction':<15}{'Room':<25}")
+    print('-' * 40)
 
-    # Display available directions
+    # List available directions and rooms
     for direction, room in currentRoom.directions.items():
-        print(f"Direction: {direction}, Room: {room}")
+        print(f"{direction:<15}{room:<25}")
+    print()
 
     # Get player input
     newDirection = input("Which direction would you like to go? Type 'exit' to exit the game.\n").capitalize()
 
-    # Check if direction is valid
-    if newDirection in currentRoom.directions:
-        currentRoom = roomObjMap[currentRoom.directions[newDirection]]
-    elif newDirection == 'Exit':
+    while newDirection not in currentRoom.directions and newDirection != "Exit":
+        print("You cannot go that way.")
+        newDirection = input("Which direction would you like to go? Type 'exit' to exit the game.\n").capitalize()
+
+    if newDirection == "Exit":
         playing = False
     else:
-        print("You cannot go that way.")
+        currentRoom = roomObjMap[currentRoom.directions[newDirection]]
 
     # Clear the screen
     clear_screen()
+
+print("Thanks for Playing!!")
+print(" ")
