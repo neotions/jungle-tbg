@@ -34,27 +34,15 @@ rooms = {
 
 # room descriptions
 roomDescriptions = {
-    "Plane Wreck" : "Placeholder room description",
-    "Crash Site" : "Placeholder room description",
-    "Jungle Path" : "Placeholder room description",
-    "Top of Temple Stairs" : "Placeholder room description",
-    "Temple Entrance" : "Placeholder room description",
-    "Creepy Library" : "Placeholder room description",
-    "Tomb": "Placeholder room description",
-    "Treasure Room" : "Placeholder room description",
-    "Demon's Lair" : "Placeholder room description"
-}
-
-itemDescriptions = {
-    "Plane Wreck" : "Placeholder room description",
-    "Crash Site" : "Placeholder room description",
-    "Jungle Path" : "Placeholder room description",
-    "Top of Temple Stairs" : "Placeholder room description",
-    "Temple Entrance" : "Placeholder room description",
-    "Creepy Library" : "Placeholder room description",
-    "Tomb": "Placeholder room description",
-    "Treasure Room" : "Placeholder room description",
-    "Demon's Lair" : "Placeholder room description"
+    "Plane Wreck" : "The twisted metal and debris of the plane lie scattered around you. The scent of fuel fills the air, and the remnants of passenger belongings are strewn about. It's a grim reminder of how you got here.",
+    "Crash Site" : "Just beyond the wreckage, trees are knocked over, forming a path of destruction through the dense jungle. Smoke rises lazily into the sky, making it easier for anyone—or anything—to find you.",
+    "Jungle Path" : "You are surrounded by towering trees, their leaves forming a natural canopy that filters the sunlight. The path is narrow and overgrown, and you can hear the distant sounds of wildlife. The air is thick and humid.",
+    "Top of Temple Stairs" : "You stand at the top of a grand staircase, each step worn from years of use. You can see the surrounding jungle stretching out below you, a sea of green. The entrance to the temple beckons.",
+    "Temple Entrance" : "Ornate carvings decorate the stone walls, telling stories of gods and warriors. A sense of awe washes over you as you step into the dimly lit entrance. It's both foreboding and inviting.",
+    "Creepy Library" : "Rows of ancient books line the walls, their spines cracked and faded. Cobwebs hang from the ceiling, and a sense of forgotten knowledge fills the air. A lone artifact glows on a pedestal in the center.",
+    "Tomb" : "You are now in a dim chamber, lit only by the glow of an artifact. Hieroglyphics cover the walls, and a sarcophagus sits in the middle of the room. The air is stale, filled with the weight of centuries.",
+    "Treasure Room" : "Your eyes widen as they fall upon heaps of gold, jewels, and artifacts of untold value. The room is richly decorated, and a red artifact pulsates mysteriously on a lavish pedestal.",
+    "Demon's Lair" : "The atmosphere changes drastically, the air becoming hot and sulfurous. Flames flicker on the walls, casting grotesque shadows. A sense of malevolence hangs heavy, as if you're being watched by unseen eyes."
 }
 
 # room items
@@ -70,14 +58,11 @@ roomItems = {
         }
     },
     "Jungle Path": {
-        "Radio" : {
-            "examine" : "I found the radio... this won't be too helpful if I don't know where I am"
+        "GPS device" : {
+            "examine" : "My GPS Device! Now if I can find my radio I can call for some help.."
         }
     },
     "Top of Temple Stairs": {
-        "Chocolate Bar" : {
-            "examine" : "It's not much but it will have to do for now..."
-        }
     },
     "Temple Entrance": {
         "Strange note" : {
@@ -86,22 +71,22 @@ roomItems = {
     },
     "Creepy Library": {
         "Blue Artifact" : {
-            "examine" : "It's not much but it will have to do for now..."
+            "examine" : "This blue artifact glows with an eerie light, illuminating the dust-covered books around it. An aura of arcane power emanates from it, suggesting that it holds secrets yet to be unlocked."
         }
     },
     "Tomb": {
         "Green Artifact" : {
-            "examine" : "It's not much but it will have to do for now..."
+            "examine" : "The green artifact is embedded in a stone pedestal. Its glow pierces through the darkness of the tomb. You can feel it humming, as if vibrating to an otherworldly rhythm. It's both unsettling and fascinating."
         }
     },
     "Treasure Room": {
         "Red Artifact" : {
-            "examine" : "It's not much but it will have to do for now..."
+            "examine" : "Surrounded by piles of gold and jewels, the red artifact steals your attention. It pulses like a heart, and warmth radiates from it, as though it's alive. It feels as if it's beckoning you to wield its mysterious power."
         }
     },
     "Demon's Lair": {
         "GPS Device" : {
-            "examine" : "It's not much but it will have to do for now..."
+            "examine" : "Finally I can call for some help!"
         }
     }
 }
