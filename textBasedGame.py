@@ -19,19 +19,6 @@ roomsDirections = {
     "Demon's Lair": {"W" : "Temple Entrance"}
 }
 
-# old room map 
-rooms = {
-    "Plane Wreck": {"E": "Crash Site"},
-    "Crash Site": {"E": "Jungle Path", "W": "Plane Wreck"},
-    "Jungle Path": {"N": "Top of Temple Stairs", "W" : "Crash Site"},
-    "Top of Temple Stairs": {"N" : "Temple Entrance", "S" : "Jungle Path"},
-    "Temple Entrance": {"N" : "Treasure Room", "S" : "Top of Temple Stairs", "E" : "Demon's Lair", "W" : "Creepy Library"},
-    "Creepy Library": {"N" : "Tomb", "E" : "Temple Entrance"},
-    "Tomb": {"S" : "Creepy Library", "E" : "Treasure Room"},
-    "Treasure Room": {"S" : "Temple Entrance", "W" : "Tomb"},
-    "Demon's Lair": {"W" : "Temple Entrance"}
-}
-
 # room descriptions
 roomDescriptions = {
     "Plane Wreck" : "The twisted metal and debris of the plane lie scattered around you. The scent of fuel fills the air, and the remnants of passenger belongings are strewn about. It's a grim reminder of how you got here.",
@@ -91,6 +78,8 @@ roomItems = {
     }
 }
 
+artifacts = ["Red","Green","Blue"]
+
 ############  functions and classes ##############
 # clear the screen based on the OS
 def clear_screen():
@@ -100,7 +89,8 @@ def clear_screen():
         os.system('cls')
 
 # move between rooms
-def moveRoom():
+def moveRoom(currentRoom):
+    clear_screen()
     # table header
     print(f"{'Direction':<15}{'Room':<25}")
     print('-' * 40)
@@ -111,20 +101,17 @@ def moveRoom():
     print()
 
     # Get player input
-    newDirection = input("Which direction would you like to go? Type 'exit' to exit the game.\n").capitalize()
-
-    while newDirection not in currentRoom.directions and newDirection != "Exit":
+    newDirection = input("Which direction would you like to go?\n").capitalize()
+    
+    while newDirection not in currentRoom.directions and newDirection != "Exit" or (currentRoom.directions[newDirection] == "Demon's Lair" and all(x not in inventory for x in artifacts)):
         print("You cannot go that way.")
-        newDirection = input("Which direction would you like to go? Type 'exit' to exit the game.\n").capitalize()
+        newDirection = input("Which direction would you like to go?\n").capitalize()
 
-    if newDirection == "Exit":
-        playing = False
-    else:
         currentRoom = roomObjMap[currentRoom.directions[newDirection]]
 
 # manage inventory prompts
 def useInventory(inventory):
-    if len(inventory == 0):
+    if len(inventory) == 0:
         print("You don't have any items yet!")
     else:
         # table header
@@ -138,6 +125,7 @@ def useInventory(inventory):
 
 # exits game
 def leave():
+    clear_screen()
     input('Are you sure? (y or n)')
     while input not in ['y','n']:
         print('Invalid input')
@@ -145,6 +133,37 @@ def leave():
     if input == 'y':
         playing = False
 
+def bossRoom():
+    print("As you step into the chamber, the temperature spikes and an overwhelming sense of dread washes over you. Your eyes are immediately drawn to a grotesque figure—a Jungle Demon, bound by enchanted chains that seem to struggle against its immense strength. Its eyes lock onto yours, and for a brief moment, it feels like it's peering into your soul.\n")
+    print("Your attention shifts momentarily, and you notice the radio lying haphazardly on the ground near the demon. It's old and battered, but you can't shake the feeling that it might be important.\n")
+    print("Lastly, your gaze wanders to a large monument on the wall. Intricately carved runes adorn its surface, and a sense of familiarity strikes you; it closely resembles the monument described in that strange note you found earlier. The weight of the room seems to press on you even more, as if urging you to act quickly.")
+    print("You frantically pull out the strange note you found in the temple entrance and read it...")
+    
+    print(roomItems['Temple Entrance']['Strange Note'])
+    for i, x in enumerate(artifacts):
+        print(f"{i+1}.{x}")
+    ans1 = input('What artifact goes in the first slot?')
+    artifacts.pop(ans1)
+    clear_screen()
+
+    print(roomItems['Temple Entrance']['Strange Note'])
+    for i, x in enumerate(artifacts):
+        print(f"{i+1}.{x}")
+    ans2 = input('What artifact goes in the first slot?')
+    artifacts.pop(ans2)
+    clear_screen()
+
+    print(roomItems['Temple Entrance']['Strange Note'])
+    for i, x in enumerate(artifacts):
+        print(f"{i+1}.{x}")
+    ans3 = input('What artifact goes in the first slot?')
+    artifacts.pop(ans3)
+    clear_screen()
+
+    if [ans1,ans2,ans3] == artifacts:
+        print('You Win!!!')
+        playing = False
+    
 # class that contains methods for room logic 
 class Room:
     def __init__(self, name):
@@ -158,7 +177,7 @@ class Room:
     
     # prints description of room
     def examine(self):
-        print(self.discription)
+        print(self.description)
 
     # search room for items and user choice to pick up item
     def search(self):
@@ -172,7 +191,6 @@ class Room:
             self.items.pop(itemSelection - 1)
         else:
             print("Enter a number listed")
-
 
 ############  init  ##############
 # room object declaration
@@ -189,35 +207,43 @@ inventory = []
 
 ############  game  ##############
 while playing:
-    # Display current room
-    print(f"You are in {currentRoom.name}.")
-    print(" ")
 
-    # ask user what to do
-    print("1. Move to another room")
-    print("2. Check Inventory")
-    print("3. Search Room")
-    print("4. Exit Game")
-    command = input('What would you like to do? (enter a number)\n')
-
-    # check if input is valid
-    while command not in [1,2,3,4]:
-        print('invalid input... (pick a number 1-4)')
-        command = int(input('What would you like to do? (enter a number)\n'))
-    # command cases
-    if command == 1:
-        moveRoom(currentRoom)
-    elif command == 2:
-        useInventory(inventory)
-    elif command == 3:
-        currentRoom.search()
-    elif command == 4:
-        leave()
+    if currentRoom.name == "Demon's Lair":
+        bossRoom()
     else:
-        print("Not too sure how you got here.... that's a bug")
+        # Display current room
+        print(f"You are in {currentRoom.name}.")
+        print(" ")
 
-    # clear the screen
-    clear_screen()
+        print(currentRoom.description)
+        
+        print(" ")
+
+        # ask user what to do
+        print("1. Move to another room")
+        print("2. Check Inventory")
+        print("3. Search Room")
+        print("4. Exit Game")
+        command = int(input('What would you like to do? (enter a number)\n'))
+
+        # check if input is valid
+        while command not in [1,2,3,4]:
+            print('invalid input... (pick a number 1-4)')
+            command = int(input('What would you like to do? (enter a number)\n'))
+        # command cases
+        if command == 1:
+            moveRoom(currentRoom)
+        elif command == 2:
+            useInventory(inventory)
+        elif command == 3:
+            currentRoom.search()
+        elif command == 4:
+            leave()
+        else:
+            print("Not too sure how you got here.... that's a bug")
+
+        # clear the screen
+        clear_screen()
 
 print("Thanks for Playing!!")
 print(" ")
