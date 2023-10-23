@@ -4,6 +4,7 @@
 # 10/2023
 
 import os
+import time
 
 ############  all game data ##############
 # map of rooms 
@@ -52,8 +53,8 @@ roomItems = {
     "Top of Temple Stairs": {
     },
     "Temple Entrance": {
-        "Strange note" : {
-            "examine" : "It's not much but it will have to do for now..."
+        "Strange Note" : {
+            "examine" : lambda: printNote()
         }
     },
     "Creepy Library": {
@@ -78,7 +79,7 @@ roomItems = {
     }
 }
 
-artifacts = ["Red","Green","Blue"]
+artifacts = ["Blue Artifact","Red Artifact", "Green Artifact"]
 
 ############  functions and classes ##############
 # clear the screen based on the OS
@@ -88,81 +89,147 @@ def clear_screen():
     else:
         os.system('cls')
 
+
+def beginning_of_game():
+    # ASCII Art of a Plane
+    plane_art = """
+        __|__|__|__
+       |--|--|--|--|
+       |__|__|__|__|
+       |||||||||||||
+       |||||||||||||
+    """
+    
+    print(plane_art)
+    time.sleep(2)
+    
+    print("\nOn your way by airplane to hike a remote mountain in the Andes, your plane experiences an odd")
+    time.sleep(2)
+    print("weather phenomena and is forced to crash land.")
+    time.sleep(2)
+    print("When you come to, you peer around and notice a demon looking through the wreckage.")
+    time.sleep(2)
+    print("To your horror, the demon becomes fixated on your radio, snatches it, and flees into the depths of the jungle.")
+    time.sleep(2)
+    print("You know you must retrieve it if you have any hope of being saved.")
+
+
+
+def allowedInBossRoom(inventory):
+    global artifacts
+    return all(x in inventory for x in artifacts)
+
+def printNote():
+    print("To vanquish the demon, heed this clue you've been given,")
+    print("Start with the heat where fiery passions are driven,")
+    print("Then to the woods where silent promises are sworn,")
+    print("And finally to depths, where deep blues are born.")
+    print("Arrange in this sequence, and the demon will be torn.")
+
 # move between rooms
-def moveRoom(currentRoom):
+def moveRoom():
+    global currentRoom
+    global inventory
+    global roomItems
     clear_screen()
-    # table header
     print(f"{'Direction':<15}{'Room':<25}")
     print('-' * 40)
 
-    # List available directions and rooms
     for direction, room in currentRoom.directions.items():
         print(f"{direction:<15}{room:<25}")
     print()
 
-    # Get player input
     newDirection = input("Which direction would you like to go?\n").capitalize()
-    
-    while newDirection not in currentRoom.directions and newDirection != "Exit" or (currentRoom.directions[newDirection] == "Demon's Lair" and all(x not in inventory for x in artifacts)):
-        print("You cannot go that way.")
+
+    while True:
+        if newDirection not in currentRoom.directions:
+            print("Invalid direction.")
+        elif currentRoom.directions[newDirection] == "Demon's Lair" and not allowedInBossRoom(inventory):  # Ensure the right inventory variable is used
+            print("You are not allowed in the boss room.")
+        else:
+            break
         newDirection = input("Which direction would you like to go?\n").capitalize()
 
+    if newDirection != "Exit":
         currentRoom = roomObjMap[currentRoom.directions[newDirection]]
 
-# manage inventory prompts
-def useInventory(inventory):
-    if len(inventory) == 0:
-        print("You don't have any items yet!")
-    else:
-        # table header
-        print(f"{'Item':<15}{'Description':<25}")
-        print('-' * 40)
-
-    # List available directions and rooms
-    for item in inventory:
-        print(f"{item:<15}{itemDescriptions[item]:<25}")
-    print()
 
 # exits game
 def leave():
+    global playing
     clear_screen()
-    input('Are you sure? (y or n)')
-    while input not in ['y','n']:
+    leaveInput = input('Are you sure? (y or n)')
+    while leaveInput not in ['y', 'n']:
         print('Invalid input')
-        input('Are you sure you want to quit? (y or n)\n')
-    if input == 'y':
+        leaveInput = input('Are you sure you want to quit? (y or n)\n')
+    if leaveInput == 'y':
         playing = False
+
+
+# manage inventory prompts
+def useInventory(inventory):
+    global itemDescriptions
+    if len(inventory) == 0:
+        print("You don't have any items yet!")
+    else:
+        print('You currently have: ')
+        for item in inventory:
+            print(f'- {item}')
+        use = input('Would you like to use an item? (yes/no)\n').lower()
+        if use == 'yes':
+            useWhich = input('Which item would you like to use?\n').lower()
+            if useWhich in inventory:
+                print(itemDescriptions[useWhich])
+            else:
+                print('You do not have that item.')
+        else:
+            print('You chose not to use an item.')
 
 def bossRoom():
+    global roomItems
+
+    # Assuming these are available in the global scope
+    global artifacts, clear_screen, printNote, playing
+
     print("As you step into the chamber, the temperature spikes and an overwhelming sense of dread washes over you. Your eyes are immediately drawn to a grotesque figure—a Jungle Demon, bound by enchanted chains that seem to struggle against its immense strength. Its eyes lock onto yours, and for a brief moment, it feels like it's peering into your soul.\n")
+    time.sleep(2)
     print("Your attention shifts momentarily, and you notice the radio lying haphazardly on the ground near the demon. It's old and battered, but you can't shake the feeling that it might be important.\n")
+    time.sleep(2)
     print("Lastly, your gaze wanders to a large monument on the wall. Intricately carved runes adorn its surface, and a sense of familiarity strikes you; it closely resembles the monument described in that strange note you found earlier. The weight of the room seems to press on you even more, as if urging you to act quickly.")
+    time.sleep(2)
     print("You frantically pull out the strange note you found in the temple entrance and read it...")
-    
-    print(roomItems['Temple Entrance']['Strange Note'])
-    for i, x in enumerate(artifacts):
-        print(f"{i+1}.{x}")
-    ans1 = input('What artifact goes in the first slot?')
-    artifacts.pop(ans1)
-    clear_screen()
 
-    print(roomItems['Temple Entrance']['Strange Note'])
-    for i, x in enumerate(artifacts):
-        print(f"{i+1}.{x}")
-    ans2 = input('What artifact goes in the first slot?')
-    artifacts.pop(ans2)
-    clear_screen()
+    printNote()
 
-    print(roomItems['Temple Entrance']['Strange Note'])
-    for i, x in enumerate(artifacts):
-        print(f"{i+1}.{x}")
-    ans3 = input('What artifact goes in the first slot?')
-    artifacts.pop(ans3)
-    clear_screen()
+    answers = []
 
-    if [ans1,ans2,ans3] == artifacts:
-        print('You Win!!!')
+    for _ in range(3):
+        for i, x in enumerate(artifacts):
+            print(f"{i+1}.{x}")
+        ans = int(input(f'What artifact goes in the slot?')) - 1
+        answers.append(artifacts[ans])
+        artifacts.pop(ans)
+        clear_screen()
+        printNote()
+
+    if answers == ["Red Artifact", "Green Artifact", "Blue Artifact"]:
+        print("A blinding light fills the chamber as the artifacts resonate with the monument.")
+        time.sleep(2)
+        print("The chains around the Jungle Demon glow red hot and start to disintegrate into ashes.")
+        time.sleep(2)
+        print("The demon lets out an ear-piercing roar as it struggles against the energy, but it's too late.")
+        time.sleep(2)
+        print("With a final cry, the demon disintegrates into a cloud of dark smoke, leaving the chamber in silence.")
+        time.sleep(2)
+        print("You feel a surge of relief and triumph. The Jungle Demon is vanquished!")
+        time.sleep(2)
+        print("You walk over to the Demon and find your radio! It still has battery!")
+        time.sleep(2)
+        print("Time to find a high place so I can call for some help! I think I'll eat that chocolate bar now....")
+        time.sleep(2)
         playing = False
+
+
     
 # class that contains methods for room logic 
 class Room:
@@ -180,17 +247,17 @@ class Room:
         print(self.description)
 
     # search room for items and user choice to pick up item
-    def search(self):
-        print(f"You search the room and find:")
-        for i, item in enumerate(self.items):
-            print(f"{i+1}. {item}")
-            
-        itemSelection = int(input("Enter the number of the item you would like to pick up"))
-        if itemSelection - 1 <= len(self.items):
-            inventory.append(self.items[itemSelection - 1])
-            self.items.pop(itemSelection - 1)
+    def search(self, inventory):
+        clear_screen()
+        if self.items:
+            for key, value in self.items.items():
+                print(f'You picked up a {key}')
+                inventory.append(key)
+            self.items.clear()
         else:
-            print("Enter a number listed")
+            print("There's nothing of use you can find in here.")
+
+
 
 ############  init  ##############
 # room object declaration
@@ -202,10 +269,15 @@ roomObjMap = {x : Room(x) for x in rooms}
 # init starting room, game states, and inventory
 playing = True
 complete = False
-currentRoom = roomObjMap['Plane Wreck']
+currentRoom = roomObjMap['Crash Site']
 inventory = []
 
 ############  game  ##############
+
+clear_screen()
+
+beginning_of_game()
+
 while playing:
 
     if currentRoom.name == "Demon's Lair":
@@ -232,18 +304,21 @@ while playing:
             command = int(input('What would you like to do? (enter a number)\n'))
         # command cases
         if command == 1:
-            moveRoom(currentRoom)
+            moveRoom()
         elif command == 2:
             useInventory(inventory)
         elif command == 3:
-            currentRoom.search()
+            currentRoom.search(inventory)
         elif command == 4:
             leave()
         else:
             print("Not too sure how you got here.... that's a bug")
 
         # clear the screen
-        clear_screen()
-
+        #clear_screen()
+print(" ")
 print("Thanks for Playing!!")
 print(" ")
+
+
+
